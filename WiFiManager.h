@@ -72,6 +72,13 @@ class WiFiManager
     //if you want to always start the config portal, without trying to connect first
     boolean       startConfigPortal(char const *apName, char const *apPassword = NULL);
 
+    // F.C. if you want the config portal when connected also as station create webserver
+    boolean       normalConfigPortal(char const *apName, char const *apPassword = NULL);
+    
+    // F.C. if you want the config portal when connected also as station create webserver
+    boolean       processReqConfigPortal();
+
+
     // get the AP name of the config portal, so it can be used in the callback
     String        getConfigPortalSSID();
 

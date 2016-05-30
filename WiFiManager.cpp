@@ -137,7 +137,12 @@ boolean WiFiManager::autoConnect(char const *apName, char const *apPassword) {
   //String pass = getPassword();
 
   // attempt to connect; should it fail, fall back to AP
-  WiFi.mode(WIFI_STA);
+  //WiFi.mode(WIFI_STA);
+   
+  //F.C.
+  // Configure Station and AP Mode
+  WiFi.mode(WIFI_AP_STA);
+  //F.C.
 
   if (connectWifi("", "") == WL_CONNECTED)   {
     DEBUG_WM(F("IP Address:"));
@@ -209,6 +214,37 @@ boolean  WiFiManager::startConfigPortal(char const *apName, char const *apPasswo
 
   return  WiFi.status() == WL_CONNECTED;
 }
+
+
+
+boolean  WiFiManager::normalConfigPortal(char const *apName, char const *apPassword) {
+  //setup AP
+  //WiFi.mode(WIFI_AP_STA);
+  DEBUG_WM("Create Access Point Normal Portal");
+
+  _apName = apName;
+  _apPassword = apPassword;
+
+  //notify we entered AP mode
+  if ( _apcallback != NULL) {
+    _apcallback(this);
+  }
+
+  connect = false;
+  setupConfigPortal();
+  return  true;
+}
+
+boolean  WiFiManager::processReqConfigPortal() {
+    //DNS
+    dnsServer->processNextRequest();
+    //HTTP
+    server->handleClient();
+    return true;
+}
+
+
+
 
 
 int WiFiManager::connectWifi(String ssid, String pass) {
